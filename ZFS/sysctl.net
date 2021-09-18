@@ -1,0 +1,11 @@
+
+#+
+  net.core.wmem_default =  8388608
+  net.core.rmem_default =  8388608
+  net.core.rmem_max=      16777216
+  net.core.rmem_max=      16777216
+  net.ipv4.tcp_rmem=      4096 8388608 16777216
+  net.ipv4.tcp_wmem=      4096 8388608 16777216
+  net.ipv4.udp_mem=       4096 8388608 16777216
+  net.ipv4.udp_rmem_min=  4096
+  net.ipv4.udp_wmem_min=  4096

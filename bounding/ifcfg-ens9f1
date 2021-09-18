@@ -1,0 +1,7 @@
+TYPE=Ethernet
+BOOTPROTO=none
+DEVICE=ens9f1
+ONBOOT=yes
+HWADDR="08:94:ef:b9:10:0d"
+MASTER=xx.0
+SLAVE=yes

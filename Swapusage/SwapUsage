@@ -1,0 +1,8 @@
+#!/bin/sh 
+#
+# Get sorted current swap usage for all running processes
+
+echo '   pid          KB      prog'
+echo '----------------------------'
+
+`dirname $0`/swapusage | sort -nk2

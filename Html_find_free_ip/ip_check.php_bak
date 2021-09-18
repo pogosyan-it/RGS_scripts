@@ -1,0 +1,68 @@
+<form action="" method="post">
+<table border="1px" width="50%" height="50%">
+ <TR>
+      <TH COLSPAN="2">
+         <H3><BR>TABLE TITLE</H3>
+      </TH>
+ </TR>
+<tr>
+        <td align="center">Проверка IP адреса:</td>
+        <td align="center">Нахождение свободных IP адресов</td>
+</tr>    
+<tr>
+        <td align="center"> <input type="text" name="ip" placeholder="IP адрес" ></td>
+        <td width="50%">
+          <form action="" method="post">  
+          <select name="subnet">
+          <option value='0'>Выберите подсеть</option>";
+       <?php
+          include 'db_connect.php';
+          $sql = "SELECT network FROM subnet";
+          $result = mysqli_query($link, $sql);
+              while ($row = mysqli_fetch_assoc($result))
+{
+echo "<option value='".$row['network']."'>".$row['network']." </option>";
+}
+            
+       ?>
+<input type="submit" name="net" value="Select"></td>
+</form>
+ </select>
+</td>
+</tr>
+<tr>
+         <td align="center"> <input type="submit" value="Проверить IP" name="btn"></td>       
+<td>
+<?php
+if (isset($_POST['net'])) 
+{
+  $selected = $_POST['subnet'];
+  echo "This is what I get: ".$selected;
+}
+?>
+</td>
+</tr>
+<tr><td>
+<?php
+  if(isset($_POST['btn'])){
+     $ip=$_POST['ip'];
+     if (filter_var($ip, FILTER_VALIDATE_IP)) 
+        {
+           #show_error("IP указан не корректно!");
+           #system("/var/www/html/test.sh");
+           $res=shell_exec("/var/www/html/ip_test_vm_deploy.sh $ip");
+           echo $res;
+        }
+    else
+        {
+           echo "IP указан не корректно!";
+        
+        }
+      
+   }
+ ?>
+<td>e</td>
+</td></tr>
+</table>
+</form>
+

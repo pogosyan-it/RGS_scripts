@@ -1,0 +1,5 @@
+ktj-gw-tst07-db.rgs.ru,ktj-gwpc-rqa-db.rgs.ru,esx-ktj-gwpc-dev-01.rgs.ru,esx-ktj-gwpc-dev-cluster-storage-01
+ktj-gw-tst07-app.rgs.ru,ktj-gwpc-rdev-app.rgs.ru,esx-ktj-gwpc-dev-01.rgs.ru,esx-ktj-gwpc-dev-cluster-storage-02
+gw-uaa-tst07.rgs.ru,gwpc-rstage-uaa.rgs.ru,esx-ktj-gwpc-dev-01.rgs.ru,esx-ktj-gwpc-dev-cluster-storage-02
+gw-hproxy-tst07-1.rgs.ru,gw-haproxy-rstage.rgs.ru,esx-ktj-gwpc-dev-01.rgs.ru,esx-ktj-gwpc-dev-cluster-storage-02
+gw-hproxy-tst07-2.rgs.ru,gw-haproxy-rstage.rgs.ru,esx-ktj-gwpc-dev-01.rgs.ru,esx-ktj-gwpc-dev-cluster-storage-02

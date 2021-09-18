@@ -1,0 +1,63 @@
+#! /usr/bin/env python
+import mysql.connector
+import sys
+import os
+import datetime
+
+import mysql.connector
+#from mysql.connector import Error
+
+from mysql.connector import MySQLConnection, Error
+#from python_mysql_dbconfig import read_db_config
+# -*- coding: utf-8 -*- 
+
+
+# Import `load_workbook` module from `openpyxl`
+from openpyxl import load_workbook
+
+# Load in the workbook
+wb = load_workbook('./esx_list.xlsx')
+
+# Get a sheet by name 
+sheet = wb.get_sheet_by_name('esx_list')
+# Print the sheet title 
+sheet.title
+row_max = sheet.max_row
+#print(row_max)
+
+
+def connect():
+
+    try:
+
+        conn = mysql.connector.connect(host="itop.rgs.ru",
+                             user="itop",         # your username
+                             passwd="itop",  # your password
+                             db="itop")
+        if conn.is_connected():
+            print('Connected to MySQL database')
+    except Error as e:
+        print(e)
+    finally:
+        conn.close()      
+               
+if __name__ == '__main__':
+    connect()
+
+query="""SELECT id FROM view_Server WHERE view_Server.NAME="%s";"""
+cursor = conn.cursor()
+
+
+for i in range(2, row_max+1):
+    name=sheet.cell(row=i,column=1).value
+    print(name)
+    cursor.execute(query,name)
+
+    #val1=val1+'.rgs.ru'
+    #str='host'+' '+val1
+    #os.system(str)
+    #output = os.popen(str)
+    #lst = output.read().split()
+    #sheet.cell(i, 8, lst[3])
+    #wb.save("esx_list.xlsx")
+
