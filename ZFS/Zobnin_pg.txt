@@ -1,0 +1,118 @@
+  Создать каталог базы
+
+Max_connections = (сколько одновременно подключений может быть к базе) * 1,3
+
+Shared_buffers = RAM / 2 (при zfs, при других можно и больше)
+
+Wal_init_zero=off
+
+Wal_recycle=off
+
+И full_page_writes=off
+
+ 
+
+Та же история при zfs
+Порт открыт !!!
+
+Это я косяк
+
+В postgresql.conf пишешь listen_address=’*’
+
+Забыл
+
+А то там localhost по умолчалову
+от postgres
+
+crontab –e
+
+ 
+
+9 0 * * * /opt/pgsql/bin/yymmdd-log-clear /db/база/data/13
+
+ 
+
+‘yymmdd-…’ –это так называется )))
+
+ 
+
+От root
+
+Zfs create pool/db/база
+
+Zfs create pool/db/база/data
+
+Zfs set logbias=throughput pool/db/база/data
+
+Zfs set sync=disabled pool/db/база/data
+
+Zfs set autosnapshot:=frequent pool/db/база/data
+
+Crontab –e
+
+0,10,20,30,40,50 * * * * /opt/oracle/zfs/autosnapshot
+
+Mkdir /db/база/data/13
+
+Chown –R postgres:postgre /db
+
+Chmod 0700 /db/база/data/13
+
+ 
+
+От postgres
+
+/usr/pgsql-13/bin/initdb –E UNICODE –D /db/база/data/13
+
+Vi /db/база.data/13/postgresql.conf
+
+ 
+
+Редактируем max_connections, shared_buffers и log_filename. Первые два крутим в максимум, потому что по ним будем потом /etc/sysctl.conf считать,
+
+второй – для красоты как ‘%y%m%d.%H%M%S’
+
+ 
+
+/usr/pgsql-13/bin/pg_ctl start –D /db/база.data/13
+
+/opt/pgsql/bin/sysctlCalculation база 13
+
+Запомнили вывод
+
+ 
+
+/usr/pgsql-13/bin/pg_ctl stop –D /db/база.data/13
+
+От root
+
+vi /etc/sysctl.conf и вывод туда + строчечку vm.hugetlb_shm_group=5432
+
+ 
+
+Cp /export/share/install/ROOT/usr/lib/system/system/pgsql-DB.service /usr/lib/system/system/pgsql-база.service
+
+Правишь в нем ~DB и ~VERSION
+
+Daemon-reload
+
+Reboot
+
+ 
+
+от postgres
+
+vi postgresql.conf и ставим huge_pages=on
+
+/usr/pgsql-13/bin/pg_ctl start -D /db/база.data/13
+
+ 
+
+И таращишься в /db/база/data/13/log/yymmdd.HHMMSS. часто все хорошо, не хорошо – меня зовешь )))
+/etc/default/grub добавить в строчку GRUB_CMDLINE_LINUX  -->
+transparent_hugepage=never
+
+grub2-mkconfig -o /boot/efi/EFI/redhat/grub.cfg
+ 
+
+И больше не читай документацию для чайников )))
