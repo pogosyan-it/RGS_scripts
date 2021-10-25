@@ -1,0 +1,40 @@
+OEL8.4 kernel 5  zfs2.1
+1. Установка пакетов:
+  yum install -y flex ncurses-devel openssl openssl-devel bc elfutils-libelf-devel libtirpc libtirpc-devel libblkid-devel libaio-devel libaio
+  yum install -y util-linux gettext python3 python3-devel zlib zlib-devel pam pam-devel perl perl-libs
+  yum install -y glibc-langpack-ru wget rsync lz4 bzip2 unzip zip tar binutils gcc m4 bison make 
+
+2.  Удалить все неиспользуемые  ядра и все что с ними связанно.
+3. Пдключаем репозиторий  UEKR6
+ yum-config-manager --enable ol8_UEKR6
+ 
+4. Установка kernel-uek-devel
+yum install -y kernel-uek-devel
+ 
+5.  mkdir -p /export/amake;  cd /export/amake; mkdir zfs; cd zfs; mkdir src pkg; cd src
+    wget https://github.com/openzfs/zfs/releases/download/zfs-2.1.0/zfs-2.1.0.tar.gz
+    Распаковываем  zfs-2.1.0.tar.gz в src 
+./  6. Скопировать файлы signing_key.gen и x509.genkey (/store/Scripts_lnk/zfs/zfs2.1/certs) в /lib/modules/5.4.17-2102.204.4.3.el8uek.x86_64/build/certs/
+  запустить в ней signing_key.gen. в результате появятся .pem и .x509
+7. Кофигурируем: 
+  ./configure --prefix=/usr --libexecdir=/usr/lib --sysconfdir=/etc  --disable-nls  --disable-sysvinit CFLAGS='-O2' 
+8. make V=1
+9. make DESTDIR=/export/amake/zfs/pkg install
+10. cd /export/amake/zfs/pkg; mv sbin/* usr/sbin/;  rmdir sbin;  cd lib/modules/5.4.17-2102.204.4.4.el8uek.x86_64/; mkdir -p oracle/zfs; mv extra// oracle/zfs/ 
+    rm -r extra; cd /export/amake/zfs/pkg
+      rsync -vaH lib/* /lib/
+      rsync -vaH etc/* /etc/
+       rsync -vaH usr/* /usr/ 
+      depmod -a
+ldconfig
+/sbin/modprobe zfs 
+ 
+11. Добавить в автозагрузку сервисы:
+Чтобы в результате получилось следующее:
+    systemctl list-unit-files | grep enabled | grep zfs
+ systemctl list-unit-files | grep enabled | grep zfs
+zfs-import-cache.service                  enabled
+zfs-mount.service                              enabled
+zfs-import.target                                enabled
+zfs.target                                              enabled
+12. reboot 
